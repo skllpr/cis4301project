@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 class App extends React.Component {
@@ -93,23 +92,12 @@ class App extends React.Component {
     return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button onClick={this.handleFirstClick}> First Option </button>
-        <button onClick={this.handleSecondClick}> Second Option </button>
-        <button onClick={this.handleThirdClick}> Third Option </button>
-        <button onClick={this.handleFourthClick}> Fourth Option </button>
-        <button onClick={this.handleFifthClick}> Fifth Option </button>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>Select Two Options</p>
+        <button className='button button1' onClick={this.handleFirstClick}> First Option </button>
+        <button className='button button2' onClick={this.handleSecondClick}> Second Option </button>
+        <button className='button button3' onClick={this.handleThirdClick}> Third Option </button>
+        <button className='button button4' onClick={this.handleFourthClick}> Fourth Option </button>
+        <button className='button button5' onClick={this.handleFifthClick}> Fifth Option </button>
       </header>
     </div>
   );
