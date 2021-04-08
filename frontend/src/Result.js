@@ -40,22 +40,37 @@ class Result extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstOption: false,
-      secondOption: false,
-      thirdOption: false,
-      fourthOption: false,
-      fifthOption: false,
-      submitted: false
+      loading: true,
+      data: null,
+      firstOption: "co2",
+      secondOption: "coral bleaching"
     };
   }
+  componentDidMount() {
+    if (this.props.options.firstOption && this.props.options.secondOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/co2/coral_bleaching", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+  }
   render() {
+    let loading = this.state.loading;
     return (
-      <>
+
+        loading ? <></> :
+        <>
       <p> Table </p>
       <LineChart
-      width={500}
-      height={300}
-      data={data}
+      width={1100}
+      height={600}
+      data={this.state.data}
       margin={{
         top: 5,
         right: 30,
@@ -64,19 +79,23 @@ class Result extends React.Component {
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" />
-      <YAxis yAxisId="left" />
+      <XAxis dataKey="year" />
+      <YAxis yAxisId="left"
+      type="number"
+      domain={['dataMin-50', 'dataMax+50']}
+      tickFormatter={(value) => parseInt(value)}
+       />
       <YAxis yAxisId="right" orientation="right" />
       <Tooltip />
       <Legend />
       <Line
         yAxisId="left"
         type="monotone"
-        dataKey="fish"
+        dataKey="ppm"
         stroke="#8884d8"
         activeDot={{ r: 8 }}
       />
-      <Line yAxisId="right" type="monotone" dataKey="CO2" stroke="#82ca9d" />
+      <Line yAxisId="right" type="monotone" dataKey="locs" stroke="#82ca9d" />
     </LineChart>
     </>
     )

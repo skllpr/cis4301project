@@ -10,7 +10,8 @@ class App extends React.Component {
       thirdOption: false,
       fourthOption: false,
       fifthOption: false,
-      submitted: false
+      submitted: false,
+      loaded: false
     };
     this.handleFirstClick=this.handleFirstClick.bind(this);
     this.handleSecondClick=this.handleSecondClick.bind(this);
@@ -99,15 +100,15 @@ class App extends React.Component {
       <header className="App-header">
       {this.state.submitted ?
         <>
-        <Result />
+        <Result options={this.state}/>
         <button className='button back' onClick={this.handleSubmit}> Back </button>
         </>
 
         :
         <>
         <p>Select Two Options</p>
-        <button className='button button1' onClick={this.handleFirstClick}> First Option </button>
-        <button className='button button2' onClick={this.handleSecondClick}> Second Option </button>
+        <button className='button button1' onClick={this.handleFirstClick}> CO2 </button>
+        <button className='button button2' onClick={this.handleSecondClick}> Coral Bleaching </button>
         <button className='button button3' onClick={this.handleThirdClick}> Third Option </button>
         <button className='button button4' onClick={this.handleFourthClick}> Fourth Option </button>
         <button className='button button5' onClick={this.handleFifthClick}> Fifth Option </button>
