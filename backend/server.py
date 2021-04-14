@@ -36,8 +36,8 @@ def weatherco2():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['ppm']=point[0]
-        tempDict['anomalies']=point[1]
+        tempDict['CO2 PPM']=point[0]
+        tempDict['Amount of Weather Anomalies']=point[1]
         tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
@@ -56,8 +56,8 @@ def co2coral():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['ppm']=point[0]
-        tempDict['locs']=point[1]
+        tempDict['CO2 PPM']=point[0]
+        tempDict['New Bleaching Instances']=point[1]
         tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
@@ -75,8 +75,8 @@ def coral_bleaching_weather():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['bleaching incidents']=point[0]
-        tempDict['weather anomalies']=point[1]
+        tempDict['New Bleaching Instances']=point[0]
+        tempDict['Amount of Weather Anomalies']=point[1]
         tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
@@ -92,8 +92,8 @@ def co2_temperature():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['PPM']=point[0]
-        tempDict['Average Temperature']=point[1]
+        tempDict['CO2 PPM']=point[0]
+        tempDict['Average Temperature (F)']=point[1]
         tempDict['Year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
@@ -109,8 +109,8 @@ def coral_temperature():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['instances']=point[0]
-        tempDict['Average Temperature']=point[1]
+        tempDict['New Bleaching Instances']=point[0]
+        tempDict['Average Temperature (F)']=point[1]
         tempDict['Year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
@@ -126,8 +126,8 @@ def weather_temperature():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['Weather Anomalies']=point[0]
-        tempDict['Average Temperature']=point[1]
+        tempDict['Amount of Weather Anomalies']=point[0]
+        tempDict['Average Temperature (F)']=point[1]
         tempDict['Year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})

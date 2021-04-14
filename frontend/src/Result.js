@@ -6,7 +6,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
+  ResponsiveContainer
 } from "recharts";
 class Result extends React.Component {
   constructor(props) {
@@ -100,10 +101,16 @@ class Result extends React.Component {
 
         loading ? <></> :
         <>
-      <p> Table </p>
+      <p> Your Visualization </p>
+      <div className="inline">
+      <div className="left">
+      <p>
+      {Object.keys(this.state.data[0])[0]}
+      </p>
+      </div>
+      <div className={"center"}>
+      <ResponsiveContainer width="100%" height={600}>
       <LineChart
-      width={1100}
-      height={600}
       data={this.state.data}
       margin={{
         top: 5,
@@ -112,16 +119,18 @@ class Result extends React.Component {
         bottom: 5
       }}
     >
-      <CartesianGrid strokeDasharray="3 3" />
+      <CartesianGrid strokeDasharray="3 3" fill={"white"}/>
       <XAxis dataKey="year"
       interval={1}
+      label={"Year"}
       />
       <YAxis yAxisId="left"
       type="number"
       domain={['dataMin-50', 'dataMax+50']}
       tickFormatter={(value) => parseInt(value)}
        />
-      <YAxis yAxisId="right" orientation="right" />
+      <YAxis yAxisId="right" orientation="right"
+      />
       <Tooltip />
       <Legend />
       <Line
@@ -133,6 +142,14 @@ class Result extends React.Component {
       />
       <Line yAxisId="right" type="monotone" dataKey={Object.keys(this.state.data[0])[1]} stroke="#82ca9d" />
     </LineChart>
+    </ResponsiveContainer>
+    </div>
+    <div className="right">
+    <p>
+    {Object.keys(this.state.data[0])[1]}
+    </p>
+    </div>
+    </div>
     </>
     )
   }

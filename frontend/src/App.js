@@ -1,6 +1,8 @@
 import './App.css';
 import React from 'react';
 import Result from './Result';
+import ParticlesBg from 'particles-bg'
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -44,51 +46,41 @@ class App extends React.Component {
   handleFirstClick(event) {
     if (this.getCount()<2) {
     this.setState({firstOption: !this.state.firstOption});
-    alert("first set to true");
     }
     else if (this.state.firstOption) {
       this.setState({firstOption: false});
-      alert("first set to false");
     }
   };
   handleSecondClick(event) {
     if (this.getCount()<2) {
     this.setState({secondOption: !this.state.secondOption});
-    alert("second set to true");
     }
     else if (this.state.secondOption) {
       this.setState({secondOption: false});
-      alert("second set to false");
     }
   };
   handleThirdClick(event) {
     if (this.getCount()<2) {
     this.setState({thirdOption: !this.state.thirdOption});
-    alert("thirdOption set to true");
     }
     else if (this.state.thirdOption) {
       this.setState({thirdOption: false});
-      alert("thirdOption set to false");
     }
   };
   handleFourthClick(event) {
     if (this.getCount()<2) {
     this.setState({fourthOption: !this.state.fourthOption});
-    alert("fourthOption set to true");
     }
     else if (this.state.fourthOption) {
       this.setState({fourthOption: false});
-      alert("fourthOption set to false");
     }
   };
   handleFifthClick(event) {
     if (this.getCount()<2) {
     this.setState({fifthOption: !this.state.fifthOption});
-    alert("fifthOption set to true");
     }
     else if (this.state.fifthOption) {
       this.setState({fifthOption: false});
-      alert("fifthOption set to false");
     }
   };
   handleSubmit(event) {
@@ -97,7 +89,9 @@ class App extends React.Component {
     render() {
     return (
       <div className="Home">
-        <h1> Visualizing Pollution Effects </h1>
+      <ParticlesBg color="#906ce0" num={1} type="cobweb" bg={true} />
+
+        <h1 className="title"> Visualizing Pollution Effects </h1>
       {this.state.submitted ?
         <>
         <Result options={this.state}/>
@@ -106,13 +100,28 @@ class App extends React.Component {
 
         :
         <>
-        <p>Select Two Options</p>
-        <button className={this.state.firstOption ? 'button ns' : 'button s'} onClick={this.handleFirstClick}> CO2 </button>
-        <button className={this.state.secondOption ? 'button ns' : 'button s'} onClick={this.handleSecondClick}> Coral Bleaching </button>
-        <button className={this.state.thirdOption ? 'button ns' : 'button s'} onClick={this.handleThirdClick}> Weather Anomalies </button>
-        <button className={this.state.fourthOption ? 'button ns' : 'button s'} onClick={this.handleFourthClick}> Temperature </button>
-        <button className={this.state.fifthOption ? 'button ns' : 'button s'} onClick={this.handleFifthClick}> Fifth Option </button>
+        <p className={"intro"}>
+        Humanity faces many threats, but none is greater than climate change. In damaging our climate, we are becoming the architects of our own destruction. By 2080, if nothing is done to reduce the amount of Carbon Dioxide being pumped into the atmosphere, the climate change will be irreversible. To help raise awareness about the effects of Global Warming, our group decided to create a software that not only help users visualize the trends, but also analyze how one trend affects another. This is done by allowing the users to select two different impacts and then sending the query to the backend to retrieve the data. The data is then displayed on a line graph. We really hope that our project can bring about positive change and awareness to the ever-increasing threat of climate change.
+        </p>
+        <p className={"details"}>Select Two Options</p>
+        <div>
+        <button className={this.state.firstOption ? 'button s' : 'button ns'} onClick={this.handleFirstClick}> CO2 </button>
+        </div>
+        <div>
+        <button className={this.state.secondOption ? 'button s' : 'button ns'} onClick={this.handleSecondClick}> Coral Bleaching </button>
+        </div>
+        <div>
+        <button className={this.state.thirdOption ? 'button s' : 'button ns'} onClick={this.handleThirdClick}> Weather Anomalies </button>
+        </div>
+        <div>
+        <button className={this.state.fourthOption ? 'button s' : 'button ns'} onClick={this.handleFourthClick}> Temperature </button>
+        </div>
+        {/*<div>
+        <button className={this.state.fifthOption ? 'button s' : 'button ns'} onClick={this.handleFifthClick}> Fifth Option </button>
+        </div>*/}
+        <div>
         <button className='button submit' onClick={this.handleSubmit}> Submit </button>
+        </div>
         </>
       }
       </div>
