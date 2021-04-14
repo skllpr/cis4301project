@@ -8,34 +8,6 @@ import {
   Tooltip,
   Legend
 } from "recharts";
-let data = [{
-  year: 2000,
-  fish: 10,
-  CO2: 1
-},
-{
-  year: 2001,
-  fish: 8,
-  CO2: 3
-},
-{
-  year: 2002,
-  fish: 5,
-  CO2: 7
-},
-{
-  year: 2003,
-  fish: 4,
-  CO2: 10
-},
-{
-  year: 2004,
-  fish: 3,
-  CO2: 15
-}
-
-
-]
 class Result extends React.Component {
   constructor(props) {
     super(props);
@@ -43,7 +15,9 @@ class Result extends React.Component {
       loading: true,
       data: null,
       firstOption: "co2",
-      secondOption: "coral bleaching"
+      secondOption: "coral bleaching",
+      thirdOption: "Weather Anomalies",
+      fourthOption: "Temperature"
     };
   }
   componentDidMount() {
@@ -55,6 +29,66 @@ class Result extends React.Component {
       };
 
       fetch("http://127.0.0.1:5000/co2/coral_bleaching", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.firstOption && this.props.options.thirdOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/co2/weather_anomalies2", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.secondOption && this.props.options.thirdOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/coral_bleaching/weather_anomalies2", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.firstOption && this.props.options.fourthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/co2/temperature", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.secondOption && this.props.options.fourthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/coral_bleaching/temperature", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.thirdOption && this.props.options.fourthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/weather_anomalies2/temperature", requestOptions)
         .then(response => response.json())
         .then(result => this.setState({data : result.data, loading:false}))
         .catch(error => console.log('error', error));
@@ -79,7 +113,9 @@ class Result extends React.Component {
       }}
     >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="year" />
+      <XAxis dataKey="year"
+      interval={1}
+      />
       <YAxis yAxisId="left"
       type="number"
       domain={['dataMin-50', 'dataMax+50']}
@@ -91,11 +127,11 @@ class Result extends React.Component {
       <Line
         yAxisId="left"
         type="monotone"
-        dataKey="ppm"
+        dataKey={Object.keys(this.state.data[0])[0]}
         stroke="#8884d8"
         activeDot={{ r: 8 }}
       />
-      <Line yAxisId="right" type="monotone" dataKey="locs" stroke="#82ca9d" />
+      <Line yAxisId="right" type="monotone" dataKey={Object.keys(this.state.data[0])[1]} stroke="#82ca9d" />
     </LineChart>
     </>
     )

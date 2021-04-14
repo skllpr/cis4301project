@@ -96,8 +96,8 @@ class App extends React.Component {
   }
     render() {
     return (
-    <div className="App">
-      <header className="App-header">
+      <div className="Home">
+        <h1> Visualizing Pollution Effects </h1>
       {this.state.submitted ?
         <>
         <Result options={this.state}/>
@@ -107,16 +107,15 @@ class App extends React.Component {
         :
         <>
         <p>Select Two Options</p>
-        <button className='button button1' onClick={this.handleFirstClick}> CO2 </button>
-        <button className='button button2' onClick={this.handleSecondClick}> Coral Bleaching </button>
-        <button className='button button3' onClick={this.handleThirdClick}> Third Option </button>
-        <button className='button button4' onClick={this.handleFourthClick}> Fourth Option </button>
-        <button className='button button5' onClick={this.handleFifthClick}> Fifth Option </button>
+        <button className={this.state.firstOption ? 'button ns' : 'button s'} onClick={this.handleFirstClick}> CO2 </button>
+        <button className={this.state.secondOption ? 'button ns' : 'button s'} onClick={this.handleSecondClick}> Coral Bleaching </button>
+        <button className={this.state.thirdOption ? 'button ns' : 'button s'} onClick={this.handleThirdClick}> Weather Anomalies </button>
+        <button className={this.state.fourthOption ? 'button ns' : 'button s'} onClick={this.handleFourthClick}> Temperature </button>
+        <button className={this.state.fifthOption ? 'button ns' : 'button s'} onClick={this.handleFifthClick}> Fifth Option </button>
         <button className='button submit' onClick={this.handleSubmit}> Submit </button>
         </>
       }
-      </header>
-    </div>
+      </div>
   );
   }
 }
