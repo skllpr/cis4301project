@@ -48,8 +48,8 @@ def co2coral():
     cur.execute("""
     SELECT ppm, locs, year FROM
     (SELECT Avg(PPM) as ppm, year FROM kbarredo.CO2 GROUP BY Year)
-    Natural JOIN (SELECT COUNT(Location) as locs, year FROM kbarredo.coral_bleaching GROUP BY Year)
-     WHERE year!=2017 and year>=2002 ORDER BY year desc
+    Natural JOIN (Select Sum(count(location)) Over (Order By Year) as locs, year from kbarredo.coral_bleaching group by year order by year desc)
+      ORDER BY year desc
     """)
     #cur.execute("SELECT Avg(PPM) as ppm, year FROM kbarredo.CO2 GROUP BY Year ORDER BY Year ASC")
     res = cur.fetchall()
@@ -57,7 +57,7 @@ def co2coral():
     for point in res:
         tempDict = {}
         tempDict['CO2 PPM']=point[0]
-        tempDict['New Bleaching Instances']=point[1]
+        tempDict['Total Bleaching Instances']=point[1]
         tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
@@ -67,7 +67,7 @@ def co2coral():
 def coral_bleaching_weather():
     cur.execute("""
     SELECT locs, amount, year FROM
-    (SELECT COUNT(Location) as locs, year FROM kbarredo.coral_bleaching GROUP BY Year)
+    (Select Sum(count(location)) Over (Order By Year) as locs, year from kbarredo.coral_bleaching group by year order by year desc)
     Natural JOIN (SELECT COUNT(id) as amount, year FROM edisonxie.weather_anomalies2 GROUP BY Year)
      ORDER BY year desc
     """)
@@ -75,7 +75,7 @@ def coral_bleaching_weather():
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['New Bleaching Instances']=point[0]
+        tempDict['Total Bleaching Instances']=point[0]
         tempDict['Amount of Weather Anomalies']=point[1]
         tempDict['year']=point[2]
         newres.insert(0,tempDict)
@@ -85,7 +85,9 @@ def co2_temperature():
     cur.execute("""
     SELECT ppm, average_temp, year FROM
     (SELECT Avg(PPM) as ppm, year FROM kbarredo.CO2 GROUP BY Year)
-    Natural JOIN (SELECT AVG(TEMP) as average_temp, year FROM edisonxie.global_temperatures GROUP BY Year)
+    Natural JOIN (Select Round(AVG(monthly_temperature),2) as average_temp, year FROM
+(Select AVG(temp) as monthly_temperature ,month, year from edisonxie.global_temperatures group by month,year order by year desc)
+Group by year ORDER BY year desc)
      ORDER BY year desc
     """)
     res = cur.fetchall()
@@ -94,24 +96,26 @@ def co2_temperature():
         tempDict = {}
         tempDict['CO2 PPM']=point[0]
         tempDict['Average Temperature (F)']=point[1]
-        tempDict['Year']=point[2]
+        tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
 @app.route('/coral_bleaching/temperature')
 def coral_temperature():
     cur.execute("""
-    SELECT loc, average_temp, year FROM
-    (SELECT count(Location) as loc, year FROM kbarredo.coral_bleaching WHERE YEAR!=2017 GROUP BY Year)
-    Natural JOIN (SELECT AVG(TEMP) as average_temp, year FROM edisonxie.global_temperatures GROUP BY Year)
+    SELECT locs, average_temp, year FROM
+    (Select Sum(count(location)) Over (Order By Year) as locs, year from kbarredo.coral_bleaching group by year order by year desc)
+    Natural JOIN (Select Round(AVG(monthly_temperature),2) as average_temp, year FROM
+(Select AVG(temp) as monthly_temperature ,month, year from edisonxie.global_temperatures group by month,year order by year desc)
+Group by year ORDER BY year desc)
      ORDER BY year desc
     """)
     res = cur.fetchall()
     newres = []
     for point in res:
         tempDict = {}
-        tempDict['New Bleaching Instances']=point[0]
+        tempDict['Total Bleaching Instances']=point[0]
         tempDict['Average Temperature (F)']=point[1]
-        tempDict['Year']=point[2]
+        tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
 @app.route('/weather_anomalies2/temperature')
@@ -119,7 +123,9 @@ def weather_temperature():
     cur.execute("""
     SELECT amount, average_temp, year FROM
     (SELECT COUNT(id) as amount, year FROM edisonxie.weather_anomalies2 GROUP BY Year)
-    Natural JOIN (SELECT AVG(TEMP) as average_temp, year FROM edisonxie.global_temperatures GROUP BY Year)
+    Natural JOIN (Select Round(AVG(monthly_temperature),2) as average_temp, year FROM
+(Select AVG(temp) as monthly_temperature ,month, year from edisonxie.global_temperatures group by month,year order by year desc)
+Group by year ORDER BY year desc)
      ORDER BY year desc
     """)
     res = cur.fetchall()
@@ -128,7 +134,7 @@ def weather_temperature():
         tempDict = {}
         tempDict['Amount of Weather Anomalies']=point[0]
         tempDict['Average Temperature (F)']=point[1]
-        tempDict['Year']=point[2]
+        tempDict['year']=point[2]
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
 

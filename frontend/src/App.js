@@ -106,7 +106,7 @@ class App extends React.Component {
     render() {
     return (
       <div className="Home">
-      <ParticlesBg color="#906ce0" num={1} type="cobweb" bg={true} />
+      <ParticlesBg color="#906ce0" num={100} type="cobweb" bg={true} />
 
         <h1 className="title"> Visualizing Pollution Effects </h1>
       {this.state.submitted ?

@@ -121,15 +121,19 @@ class Result extends React.Component {
     >
       <CartesianGrid strokeDasharray="3 3" fill={"white"}/>
       <XAxis dataKey="year"
-      interval={1}
-      label={"Year"}
+      interval={2}
+      label={{value: "Year", position: "bottom", offset: -90}}
       />
       <YAxis yAxisId="left"
       type="number"
-      domain={['dataMin-50', 'dataMax+50']}
+      domain={['dataMin-(.2*dataMin)', 'dataMax+(.2*dataMax)']}
       tickFormatter={(value) => parseInt(value)}
        />
       <YAxis yAxisId="right" orientation="right"
+      domain={['dataMin-(.2*dataMin)', 'dataMax+(.2*dataMax)']}
+      tickFormatter={(value) => parseInt(value)}
+      type="number"
+
       />
       <Tooltip />
       <Legend />
