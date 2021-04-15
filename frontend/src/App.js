@@ -96,7 +96,12 @@ class App extends React.Component {
     }
   };
   handleSubmit(event) {
+    if (this.getCount()<2) {
+      alert("Please select 2 options.");
+    }
+    else {
     this.setState({submitted: !this.state.submitted});
+  }
   }
     render() {
     return (
