@@ -132,17 +132,15 @@ def weather_temperature():
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
 
-
-
-
-@app.route('/fish')
-def coral_bleaching():
-    cur.execute("SELECT count(species), year FROM kbarredo.fish_population GROUP BY Year ORDER BY Year ASC")
-    res = cur.fetchall()
-    return jsonify({"data":res})
-@app.route('/temperature')
+@app.route('/count')
 def temperature():
-    cur.execute("SELECT AVG(average_temp), year FROM kbarredo.temperature GROUP BY Year ORDER BY Year ASC")
+    cur.execute("""
+select Sum("Column")
+From ((select Count(*) as "Column" From KBARREDO.CO2)
+        union (select Count(*) as "Column" From EDISONXIE.Weather_Anomalies2)
+        union (select Count(*) as "Column" From EDISONXIE.Global_Temperatures)
+        union (select Count(*) as "Column" From KBARREDO.Coral_Bleaching))
+    """)
     res = cur.fetchall()
     return jsonify({"data":res})
 

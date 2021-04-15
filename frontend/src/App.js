@@ -21,6 +21,7 @@ class App extends React.Component {
     this.handleFourthClick=this.handleFourthClick.bind(this);
     this.handleFifthClick=this.handleFifthClick.bind(this);
     this.getCount=this.getCount.bind(this);
+    this.handleCount=this.handleCount.bind(this);
     this.handleSubmit=this.handleSubmit.bind(this);
 
   }
@@ -66,6 +67,17 @@ class App extends React.Component {
     else if (this.state.thirdOption) {
       this.setState({thirdOption: false});
     }
+  };
+  handleCount(event) {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch("http://127.0.0.1:5000/count", requestOptions)
+      .then(response => response.json())
+      .then(result => alert(result.data + " tuples in the database. The SQL command run is: \n select Sum(Column) From \n ((select Count(*) as Column From KBARREDO.CO2) \n union (select Count(*) as Column From EDISONXIE.Weather_Anomalies2) \n union (select Count(*) as Column From EDISONXIE.Global_Temperatures) \n union (select Count(*) as Column From KBARREDO.Coral_Bleaching));"))
+      .catch(error => console.log('error', error));
   };
   handleFourthClick(event) {
     if (this.getCount()<2) {
@@ -121,6 +133,9 @@ class App extends React.Component {
         </div>*/}
         <div>
         <button className='button submit' onClick={this.handleSubmit}> Submit </button>
+        </div>
+        <div>
+        <button className='button submit' onClick={this.handleCount}> Tuple Count </button>
         </div>
         </>
       }
