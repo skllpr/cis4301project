@@ -138,6 +138,105 @@ Group by year ORDER BY year desc)
         newres.insert(0,tempDict)
     return jsonify({"data":newres})
 
+@app.route('/co2/fish')
+def co2_fish():
+    cur.execute("""
+    SELECT ppm, amount, year
+FROM (SELECT Avg(PPM) as ppm, year
+              FROM kbarredo.CO2
+              GROUP BY Year)
+              Natural JOIN
+              (SELECT COUNT(GBID) as amount, year
+              FROM kbarredo.fish_population
+              GROUP BY Year)
+ORDER BY year desc
+    """)
+    res = cur.fetchall()
+    newres = []
+    for point in res:
+        tempDict = {}
+        tempDict['CO2 PPM']=point[0]
+        tempDict['Parrotfish Count']=point[1]
+        tempDict['year']=point[2]
+        newres.insert(0,tempDict)
+    return jsonify({"data":newres})
+
+@app.route('/coral_bleaching/fish')
+def coral_fish():
+    cur.execute("""
+    SELECT locs, amount, year
+FROM (SELECT SUM(COUNT(location)) OVER (Order By Year) as locs, year
+              FROM kbarredo.coral_bleaching
+              GROUP BY year
+              ORDER BY year desc)
+              Natural JOIN
+              (SELECT COUNT(GBID) as amount, year
+              FROM kbarredo.fish_population
+              GROUP BY Year)
+ORDER BY year desc
+    """)
+    res = cur.fetchall()
+    newres = []
+    for point in res:
+        tempDict = {}
+        tempDict['Total Bleaching Instances']=point[0]
+        tempDict['Parrotfish Count']=point[1]
+        tempDict['year']=point[2]
+        newres.insert(0,tempDict)
+    return jsonify({"data":newres})
+
+
+@app.route('/weather_anomalies/fish')
+def weather_fish():
+    cur.execute("""
+    SELECT anomalies, amount, year
+FROM (SELECT COUNT(id) as anomalies, year
+              FROM edisonxie.weather_anomalies2
+              GROUP BY Year)
+              Natural JOIN
+              (SELECT COUNT(GBID) as amount, year
+              FROM kbarredo.fish_population
+              GROUP BY Year)
+ORDER BY year desc
+    """)
+    res = cur.fetchall()
+    newres = []
+    for point in res:
+        tempDict = {}
+        tempDict['Amount of Weather Anomalies']=point[0]
+        tempDict['Parrotfish Count']=point[1]
+        tempDict['year']=point[2]
+        newres.insert(0,tempDict)
+    return jsonify({"data":newres})
+
+@app.route('/temperature/fish')
+def temperature_fish():
+    cur.execute("""
+    SELECT average_temp, amount, year
+FROM (Select Round(AVG(monthly_temperature),2) as average_temp, year
+              FROM (Select AVG(temp) as monthly_temperature ,month, year
+                            FROM edisonxie.global_temperatures
+                            GROUP BY month,year
+                            ORDER BY year desc)
+              GROUP BY year
+              ORDER BY year desc)
+              Natural JOIN
+              (SELECT COUNT(GBID) as amount, year
+              FROM kbarredo.fish_population
+              GROUP BY Year)
+ORDER BY year desc
+    """)
+    res = cur.fetchall()
+    newres = []
+    for point in res:
+        tempDict = {}
+        tempDict['Amount of Weather Anomalies']=point[0]
+        tempDict['Parrotfish Count']=point[1]
+        tempDict['year']=point[2]
+        newres.insert(0,tempDict)
+    return jsonify({"data":newres})
+
+
 @app.route('/count')
 def temperature():
     cur.execute("""
@@ -145,7 +244,9 @@ select Sum("Column")
 From ((select Count(*) as "Column" From KBARREDO.CO2)
         union (select Count(*) as "Column" From EDISONXIE.Weather_Anomalies2)
         union (select Count(*) as "Column" From EDISONXIE.Global_Temperatures)
-        union (select Count(*) as "Column" From KBARREDO.Coral_Bleaching))
+        union (select Count(*) as "Column" From KBARREDO.Coral_Bleaching)
+        union (select Count(*) as "Column" From KBARREDO.fish_population)
+        )
     """)
     res = cur.fetchall()
     return jsonify({"data":res})

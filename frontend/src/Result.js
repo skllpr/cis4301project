@@ -94,6 +94,54 @@ class Result extends React.Component {
         .then(result => this.setState({data : result.data, loading:false}))
         .catch(error => console.log('error', error));
     }
+    else if (this.props.options.firstOption && this.props.options.fifthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/co2/fish", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.secondOption && this.props.options.fifthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/coral_bleaching/fish", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.thirdOption && this.props.options.fifthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/weather_anomalies/fish", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
+    else if (this.props.options.fourthOption && this.props.options.fifthOption) {
+
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+
+      fetch("http://127.0.0.1:5000/temperature/fish", requestOptions)
+        .then(response => response.json())
+        .then(result => this.setState({data : result.data, loading:false}))
+        .catch(error => console.log('error', error));
+    }
   }
   render() {
     let loading = this.state.loading;

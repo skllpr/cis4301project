@@ -133,9 +133,9 @@ class App extends React.Component {
         <div>
         <button className={this.state.fourthOption ? 'button s' : 'button ns'} onClick={this.handleFourthClick}> Temperature </button>
         </div>
-        {/*<div>
-        <button className={this.state.fifthOption ? 'button s' : 'button ns'} onClick={this.handleFifthClick}> Fifth Option </button>
-        </div>*/}
+        <div>
+        <button className={this.state.fifthOption ? 'button s' : 'button ns'} onClick={this.handleFifthClick}> Parrotfish Count </button>
+        </div>
         <div>
         <button className='button submit' onClick={this.handleSubmit}> Submit </button>
         </div>
